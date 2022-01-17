@@ -7,7 +7,12 @@ var time = 60;
 var questionsSectionEl = document.querySelector("#questions-section");
 var questionNumber = 0;
 var nextButtonEl = document.querySelector("#next");
-var resultEl = document.querySelector("#result")
+var resultEl = document.querySelector("#result");
+var playerObj = {};
+var score = 0;
+var highScore;
+var highscoreEl= document.querySelector("#highScore");
+
 
 
 var questions = [
@@ -63,11 +68,10 @@ var timeCountdown = function () {
     timeLeftEl.textContent = time;
     time--;
   }, 1000);
-    if (time < 0) {
+    if (time <= 0) {
         console.log("Your Time Is Up");
-        clearInterval(timeInterval);
-        score();
-    }
+        clearInterval(timeCountdown);
+    } 
 }
 
 var timeReduced = function () {  
@@ -159,32 +163,43 @@ var displayQuestion = function (questionIndex) {
     }
 }
 
+nextButtonEl.addEventListener("click", function() {
+  questionNumber++;
+  if (questionNumber < 4) {
+      displayQuestion(questionNumber);
+ } else {
+  savedScore(); }
+  
+});
 
-var score = ;
-var highScore = 0;
+// var savedScore = function (){
+//   localStorage.setItem(JSON.stringify("highScore", playerObj))
+// } 
+// savedScore(playerOBJ)
+
+
+// var userName = prompt.value
+
+//   var playerObj = {
+//   name: userName
+//   newScore: score
 
 var savedScore = function () {  
-    console.log("I'm saved");
-localStorage.getItem(score);
+    console.log(score);
+localStorage.getItem("highScore");
+highScoreEl.textContent = score
 
-if(highScore !== null){
-    if (score > parseInt(localStorage.getItem("highScore"))) {
-        localStorage.setItem("highScore", score);
-      }
+if(score !== 0){
+  if(score > parseInt(localStorage.getItem("highScore"))) {
+   localStorage.setItem("highScore", JSON.stringify (score));
+ }
 }
 else{
-    localStorage.setItem("highScore", score);
+    localStorage.setItem("highScore", JSON.stringify (score));
 }
 }
 
-nextButtonEl.addEventListener("click", function() {
-    questionNumber++;
-    if (questionNumber < 4) {
-        displayQuestion(questionNumber);
-   } else {
-    savedScore();
-   }
-});
+
 
 startButtonEl.addEventListener("click", function() {
     startQuiz();
